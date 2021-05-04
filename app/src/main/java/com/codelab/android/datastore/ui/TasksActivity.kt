@@ -79,7 +79,7 @@ class TasksActivity : AppCompatActivity() {
             this,
             TasksViewModelFactory(
                 TasksRepository,
-                UserPreferencesRepository(userPreferencesStore, this)
+                UserPreferencesRepository(userPreferencesStore)
             )
         ).get(TasksViewModel::class.java)
 
@@ -87,7 +87,7 @@ class TasksActivity : AppCompatActivity() {
         setupFilterListeners(viewModel)
         setupSort()
 
-        viewModel.tasksUiModel.observe(owner = this) { tasksUiModel ->
+        viewModel.tasksUiModel.observe(this) { tasksUiModel ->
             adapter.submitList(tasksUiModel.tasks)
             updateSort(tasksUiModel.sortOrder)
             binding.showCompletedSwitch.isChecked = tasksUiModel.showCompleted
