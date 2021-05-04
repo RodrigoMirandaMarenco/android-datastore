@@ -21,6 +21,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
+import androidx.datastore.migrations.SharedPreferencesMigration
+import androidx.datastore.migrations.SharedPreferencesView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.codelab.android.datastore.UserPreferences
@@ -36,7 +38,28 @@ private const val SORT_ORDER_KEY = "sort_order"
 
 private val Context.userPreferencesStore: DataStore<UserPreferences> by dataStore(
     fileName = DATA_STORE_FILE_NAME,
-    serializer = UserPreferencesSerializer
+    serializer = UserPreferencesSerializer,
+    produceMigrations = { context ->
+        listOf(
+            SharedPreferencesMigration(
+                context,
+                USER_PREFERENCES_NAME
+            ) { sharedPrefs: SharedPreferencesView, currentData: UserPreferences ->
+                if (currentData.sortOrder == SortOrder.UNSPECIFIED) {
+                    currentData.toBuilder().setSortOrder(
+                        SortOrder.valueOf(
+                            sharedPrefs.getString(
+                                SORT_ORDER_KEY,
+                                SortOrder.NONE.name
+                            ) ?: SortOrder.NONE.name
+                        )
+                    ).build()
+                } else {
+                    currentData
+                }
+            }
+        )
+    }
 )
 
 class TasksActivity : AppCompatActivity() {
