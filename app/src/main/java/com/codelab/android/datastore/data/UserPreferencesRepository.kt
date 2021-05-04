@@ -21,6 +21,7 @@ import android.util.Log
 import androidx.core.content.edit
 import androidx.datastore.core.DataStore
 import com.codelab.android.datastore.UserPreferences
+import com.codelab.android.datastore.UserPreferences.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,13 +30,6 @@ import java.io.IOException
 
 private const val USER_PREFERENCES_NAME = "user_preferences"
 private const val SORT_ORDER_KEY = "sort_order"
-
-enum class SortOrder {
-    NONE,
-    BY_DEADLINE,
-    BY_PRIORITY,
-    BY_DEADLINE_AND_PRIORITY
-}
 
 /**
  * Class that handles saving and retrieving user preferences
@@ -50,7 +44,7 @@ class UserPreferencesRepository(
         .catch { exception ->
             if (exception is IOException) {
                 Log.e(TAG, "Error reading sort order preferences.", exception)
-                emit(UserPreferences.getDefaultInstance())
+                emit(getDefaultInstance())
             } else {
                 throw exception
             }

@@ -19,7 +19,7 @@ package com.codelab.android.datastore.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
-import com.codelab.android.datastore.data.SortOrder
+import com.codelab.android.datastore.UserPreferences.SortOrder
 import com.codelab.android.datastore.data.Task
 import com.codelab.android.datastore.data.TasksRepository
 import com.codelab.android.datastore.data.UserPreferencesRepository
