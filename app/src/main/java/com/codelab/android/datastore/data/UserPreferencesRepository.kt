@@ -117,4 +117,11 @@ class UserPreferencesRepository(
             putString(SORT_ORDER_KEY, sortOrder.name)
         }
     }
+
+    suspend fun updateShowCompleted(completed: Boolean) {
+        userPreferencesStore.updateData { preferences ->
+            preferences.toBuilder().setShowCompleted(completed).build()
+            // Finishes once data is persisted.
+        }
+    }
 }
