@@ -16,15 +16,29 @@
 
 package com.codelab.android.datastore.ui
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.codelab.android.datastore.UserPreferences
 import com.codelab.android.datastore.data.SortOrder
 import com.codelab.android.datastore.data.TasksRepository
 import com.codelab.android.datastore.data.UserPreferencesRepository
+import com.codelab.android.datastore.data.UserPreferencesSerializer
 import com.codelab.android.datastore.databinding.ActivityTasksBinding
+
+private const val USER_PREFERENCES_NAME = "user_preferences"
+private const val DATA_STORE_FILE_NAME = "user_prefs.pb"
+private const val SORT_ORDER_KEY = "sort_order"
+
+private val Context.userPreferencesStore: DataStore<UserPreferences> by dataStore(
+    fileName = DATA_STORE_FILE_NAME,
+    serializer = UserPreferencesSerializer
+)
 
 class TasksActivity : AppCompatActivity() {
 
